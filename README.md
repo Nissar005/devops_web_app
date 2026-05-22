@@ -1,5 +1,7 @@
 # DevOps Web App
 
+[![Django CI](https://github.com/Nissar005/devops_web_app/actions/workflows/ci.yml/badge.svg)](https://github.com/Nissar005/devops_web_app/actions/workflows/ci.yml)
+
 This repository contains a Django-based DevOps training platform with course catalog, learning modules, user accounts, and media support.
 
 ## Setup
