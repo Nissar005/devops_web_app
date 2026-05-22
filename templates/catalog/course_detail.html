@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.title }} - DevOps Courses{% endblock %}
+
+{% block content %}
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h2 class="card-title mb-1">{{ course.title }}</h2>
+          <div class="text-muted mb-2">{{ course.category }}</div>
+          <p class="card-text">{{ course.description }}</p>
+
+          {% if user.is_authenticated %}
+            {% if is_enrolled %}
+              <div class="d-flex flex-wrap gap-2 mt-3">
+                {% if next_lesson %}
+                  <a class="btn btn-primary" href="{% url 'learning:lesson_play' next_lesson.id %}">
+                    Continue learning
+                  </a>
+                {% else %}
+                  <div class="alert alert-success mb-0">You completed this course.</div>
+                {% endif %}
+                <a class="btn btn-outline-secondary" href="{% url 'learning:user_dashboard' %}">
+                  Go to dashboard
+                </a>
+              </div>
+            {% else %}
+              <div class="mt-3">
+                <a class="btn btn-success" href="{% url 'learning:enroll_course' course.slug %}">
+                  Enroll to start learning
+                </a>
+              </div>
+              <div class="text-muted mt-2">Videos and lesson progress unlock after enrollment.</div>
+            {% endif %}
+          {% else %}
+            <div class="mt-3">
+              <div class="alert alert-info mb-2">
+                Log in to enroll and play lessons.
+              </div>
+              <a class="btn btn-primary" href="{% url 'accounts:login' %}">Login</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {% for module in modules %}
+        <div class="card mb-3">
+          <div class="card-header">
+            <strong>Module {{ forloop.counter }}:</strong> {{ module.title }}
+          </div>
+          <div class="card-body">
+            <div class="list-group">
+              {% for lesson in module.lessons.all %}
+                  <div class="list-group-item d-flex align-items-start justify-content-between gap-3">
+                    <div>
+                      <div class="fw-semibold">
+                        Lesson {{ lesson.order_index }}: {{ lesson.title }}
+                      </div>
+                      {% if lesson.description %}
+                        <div class="text-muted small mt-1">
+                          {{ lesson.description|truncatechars:120 }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="text-end">
+                      {% if user.is_authenticated and is_enrolled %}
+                        {% if lesson.id in completed_lesson_ids %}
+                          <span class="badge text-bg-success">Completed</span>
+                        {% else %}
+                          <span class="badge text-bg-secondary">Not completed</span>
+                        {% endif %}
+
+                        {% if lesson.video_file %}
+                          <div class="mt-2">
+                            {% if lesson.id in completed_lesson_ids %}
+                              <a class="btn btn-sm btn-outline-primary" href="{% url 'learning:lesson_play' lesson.id %}">
+                                Review
+                              </a>
+                            {% else %}
+                              <a class="btn btn-sm btn-primary" href="{% url 'learning:lesson_play' lesson.id %}">
+                                Play
+                              </a>
+                            {% endif %}
+                          </div>
+                        {% else %}
+                          <div class="mt-2 text-muted small">Video not uploaded yet.</div>
+                        {% endif %}
+                      {% else %}
+                        <span class="badge text-bg-light border">Locked</span>
+                      {% endif %}
+                    </div>
+                  </div>
+              {% empty %}
+                <div class="text-muted">No lessons in this module yet.</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="alert alert-warning">This course has no modules yet.</div>
+      {% endfor %}
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="mb-3">Quick actions</h5>
+          {% if user.is_authenticated and not is_enrolled %}
+            <a class="btn btn-success w-100" href="{% url 'learning:enroll_course' course.slug %}">
+              Enroll
+            </a>
+          {% endif %}
+          <a class="btn btn-outline-primary w-100 mt-2" href="{% url 'catalog:course_list' %}">
+            Back to catalog
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

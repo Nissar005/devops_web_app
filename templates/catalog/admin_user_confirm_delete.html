@@ -1,0 +1,18 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Delete User - Admin{% endblock %}
+
+{% block content %}
+  <div class="alert alert-danger">
+    Are you sure you want to delete <strong>{{ user.username }}</strong>?
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a class="btn btn-outline-secondary" href="{% url 'catalog:admin_user_list' %}">
+      Cancel
+    </a>
+  </form>
+{% endblock %}
+

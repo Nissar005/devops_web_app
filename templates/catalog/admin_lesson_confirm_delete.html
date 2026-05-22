@@ -1,0 +1,18 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Delete Lesson - Admin{% endblock %}
+
+{% block content %}
+  <div class="alert alert-danger">
+    Delete lesson <strong>{{ lesson.title }}</strong> from module <strong>{{ module.title }}</strong>?
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete lesson</button>
+    <a class="btn btn-outline-secondary" href="{% url 'catalog:admin_module_edit' module.id %}">
+      Cancel
+    </a>
+  </form>
+{% endblock %}
+

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lesson.title }} - DevOps Courses{% endblock %}
+
+{% block content %}
+  <div class="mb-3">
+    <a href="{% url 'catalog:course_detail' course.slug %}" class="link-secondary text-decoration-none">
+      &larr; Back to {{ course.title }}
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h3 class="h4 mb-2">{{ lesson.title }}</h3>
+      <div class="text-muted mb-3">
+        Module: {{ lesson.module.title }} (Lesson {{ lesson.order_index }})
+      </div>
+
+      {% if lesson.video_file %}
+        <div class="ratio ratio-16x9 mb-3">
+          <video controls class="w-100">
+            <source src="{{ lesson.video_file.url }}" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      {% else %}
+        <div class="alert alert-warning">
+          This lesson doesn’t have a video uploaded yet.
+        </div>
+      {% endif %}
+
+      {% if completed %}
+        <div class="alert alert-success mb-0">Marked as completed.</div>
+      {% else %}
+        <form method="post" action="{% url 'learning:mark_lesson_completed' lesson.id %}">
+          {% csrf_token %}
+          <button class="btn btn-success" type="submit">Mark lesson completed</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+

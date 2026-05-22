@@ -1,0 +1,53 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Admin Dashboard - DevOps Courses{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+    <div>
+      <h2 class="mb-1">Admin Dashboard</h2>
+      <div class="text-muted">High-level analytics for your catalog.</div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <div class="text-muted">Total Users</div>
+          <div class="display-6">{{ user_count }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <div class="text-muted">Total Courses</div>
+          <div class="display-6">{{ course_count }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <div class="text-muted">Total Enrollments</div>
+          <div class="display-6">{{ enrollment_count }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <div class="text-muted">Lesson Completions</div>
+          <div class="display-6">{{ lesson_completion_count }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 d-flex gap-2 flex-wrap">
+    <a class="btn btn-primary" href="{% url 'catalog:admin_course_list' %}">Manage Courses</a>
+    <a class="btn btn-outline-primary" href="{% url 'catalog:admin_user_list' %}">Manage Users</a>
+  </div>
+{% endblock %}
+

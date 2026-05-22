@@ -1,0 +1,79 @@
+All project URLs (open after running dev server at http://localhost:8000)
+
+Public / browsing
+- /                       — name: catalog:course_list — example: http://localhost:8000/
+- /courses/<slug>/        — name: catalog:course_detail — example: http://localhost:8000/courses/linux-for-devops/
+
+Django built-in admin
+- /django-admin/          — example: http://localhost:8000/django-admin/
+
+Catalog (app admin-style UI; requires login and role == "admin")
+- /admin/dashboard/                       — name: catalog:admin_dashboard — http://localhost:8000/admin/dashboard/
+- /admin/users/                           — name: catalog:admin_user_list — http://localhost:8000/admin/users/
+- /admin/users/<user_id>/                 — name: catalog:admin_user_edit — http://localhost:8000/admin/users/42/
+- /admin/users/<user_id>/delete/          — name: catalog:admin_user_delete — http://localhost:8000/admin/users/42/delete/
+- /admin/courses/                         — name: catalog:admin_course_list — http://localhost:8000/admin/courses/
+- /admin/courses/new/                     — name: catalog:admin_course_create — http://localhost:8000/admin/courses/new/
+- /admin/courses/<course_slug>/edit/      — name: catalog:admin_course_edit — http://localhost:8000/admin/courses/docker-essentials/edit/
+- /admin/courses/<course_slug>/delete/    — name: catalog:admin_course_delete — http://localhost:8000/admin/courses/docker-essentials/delete/
+- /admin/courses/<course_slug>/modules/new/ — name: catalog:admin_module_create — http://localhost:8000/admin/courses/docker-essentials/modules/new/
+- /admin/modules/<module_id>/edit/        — name: catalog:admin_module_edit — http://localhost:8000/admin/modules/7/edit/
+- /admin/modules/<module_id>/delete/      — name: catalog:admin_module_delete — http://localhost:8000/admin/modules/7/delete/
+- /admin/modules/<module_id>/lessons/new/ — name: catalog:admin_lesson_create — http://localhost:8000/admin/modules/7/lessons/new/
+- /admin/lessons/<lesson_id>/edit/        — name: catalog:admin_lesson_edit — http://localhost:8000/admin/lessons/21/edit/
+- /admin/lessons/<lesson_id>/delete/      — name: catalog:admin_lesson_delete — http://localhost:8000/admin/lessons/21/delete/
+
+Accounts (authentication)
+- /accounts/register/    — name: accounts:register — http://localhost:8000/accounts/register/
+- /accounts/login/       — name: accounts:login — http://localhost:8000/accounts/login/
+- /accounts/logout/      — name: accounts:logout — http://localhost:8000/accounts/logout/
+
+Learning (requires login)
+- /learn/dashboard/                      — name: learning:user_dashboard — http://localhost:8000/learn/dashboard/
+- /learn/enroll/<course_slug>/           — name: learning:enroll_course — http://localhost:8000/learn/enroll/linux-for-devops/
+- /learn/lesson/<lesson_id>/             — name: learning:lesson_play — http://localhost:8000/learn/lesson/21/
+- /learn/lesson/<lesson_id>/complete/    — name: learning:mark_lesson_completed (POST) — http://localhost:8000/learn/lesson/21/complete/
+
+Media & static (dev only)
+- /media/<path> — served when DEBUG=True — e.g. http://localhost:8000/media/course_videos/example.mp4
+
+Start process (Windows PowerShell)
+1) Activate your virtual environment (PowerShell):
+
+```
+& .\venv\Scripts\Activate.ps1
+```
+
+2) Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+3) Apply migrations:
+
+```
+python manage.py migrate
+```
+
+4) (Optional) Create a superuser for the Django admin site:
+
+```
+python manage.py createsuperuser
+```
+
+5) (Optional) Seed sample DevOps courses:
+
+```
+python manage.py seed_devops_courses
+```
+
+6) Start the development server:
+
+```
+python manage.py runserver
+```
+
+After the server is running, open the routes above at http://localhost:8000/
+
+File: all_urls.txt
