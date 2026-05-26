@@ -11,7 +11,10 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# =========================================================
 # SECURITY SETTINGS
+# =========================================================
+
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
     "dev-only-insecure-key-change-me"
@@ -22,8 +25,23 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 # Allow all hosts (good for learning/deployment practice)
 ALLOWED_HOSTS = ['*']
 
+# CSRF trusted origins for Render deployment
+CSRF_TRUSTED_ORIGINS = [
+    "https://devops-web-app-4pyb.onrender.com",
+]
 
+# Secure proxy SSL header for Render
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Secure cookies for HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
+# =========================================================
 # APPLICATIONS
+# =========================================================
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,7 +60,10 @@ INSTALLED_APPS = [
 ]
 
 
+# =========================================================
 # MIDDLEWARE
+# =========================================================
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -54,11 +75,17 @@ MIDDLEWARE = [
 ]
 
 
+# =========================================================
 # URL CONFIG
+# =========================================================
+
 ROOT_URLCONF = 'course_platform.urls'
 
 
+# =========================================================
 # TEMPLATES
+# =========================================================
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -76,11 +103,17 @@ TEMPLATES = [
 ]
 
 
+# =========================================================
 # WSGI
+# =========================================================
+
 WSGI_APPLICATION = 'course_platform.wsgi.application'
 
 
+# =========================================================
 # DATABASE
+# =========================================================
+
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get(
@@ -99,7 +132,10 @@ DATABASES = {
 }
 
 
+# =========================================================
 # PASSWORD VALIDATION
+# =========================================================
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -116,7 +152,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# =========================================================
 # INTERNATIONALIZATION
+# =========================================================
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -126,26 +165,41 @@ USE_I18N = True
 USE_TZ = True
 
 
+# =========================================================
 # STATIC FILES
+# =========================================================
+
 STATIC_URL = 'static/'
 
 # Required for Render deployment
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
+# =========================================================
 # MEDIA FILES
+# =========================================================
+
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
+# =========================================================
 # CUSTOM USER MODEL
+# =========================================================
+
 AUTH_USER_MODEL = "accounts.User"
 
 
+# =========================================================
 # LOGIN / LOGOUT REDIRECTS
+# =========================================================
+
 LOGIN_REDIRECT_URL = "catalog:course_list"
 LOGOUT_REDIRECT_URL = "catalog:course_list"
 
 
+# =========================================================
 # DEFAULT PRIMARY KEY
+# =========================================================
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
