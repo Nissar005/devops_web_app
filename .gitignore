@@ -1,7 +1,6 @@
 venv/
 __pycache__/
 *.py[cod]
-media/course_videos/
 *.log
 *.pot
 *.pyc

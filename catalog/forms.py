@@ -21,7 +21,7 @@ class CourseModuleForm(forms.ModelForm):
 class CourseLessonForm(forms.ModelForm):
     class Meta:
         model = CourseLesson
-        fields = ["title", "description", "order_index", "video_file"]
+        fields = ["title", "description", "order_index", "video_url"]
 
 
 class UserRoleForm(forms.ModelForm):

@@ -72,10 +72,10 @@
               <div class="list-group-item d-flex justify-content-between align-items-start gap-3">
                 <div>
                   <div class="fw-semibold">Lesson {{ lesson.order_index }}: {{ lesson.title }}</div>
-                  {% if lesson.video_file %}
-                    <div class="text-muted small">Video uploaded</div>
+                  {% if lesson.video_url or lesson.video_file %}
+                    <div class="text-muted small">Video configured</div>
                   {% else %}
-                    <div class="text-muted small">Video not uploaded</div>
+                    <div class="text-muted small">Video link not configured</div>
                   {% endif %}
                 </div>
                 <div class="d-flex gap-2 flex-wrap justify-content-end">

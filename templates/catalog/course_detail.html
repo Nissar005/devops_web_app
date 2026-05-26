@@ -71,7 +71,7 @@
                           <span class="badge text-bg-secondary">Not completed</span>
                         {% endif %}
 
-                        {% if lesson.video_file %}
+                        {% if lesson.video_url or lesson.video_file %}
                           <div class="mt-2">
                             {% if lesson.id in completed_lesson_ids %}
                               <a class="btn btn-sm btn-outline-primary" href="{% url 'learning:lesson_play' lesson.id %}">
@@ -84,7 +84,7 @@
                             {% endif %}
                           </div>
                         {% else %}
-                          <div class="mt-2 text-muted small">Video not uploaded yet.</div>
+                          <div class="mt-2 text-muted small">Video link not configured yet.</div>
                         {% endif %}
                       {% else %}
                         <span class="badge text-bg-light border">Locked</span>

@@ -62,6 +62,9 @@ class CourseLesson(models.Model):
     description = models.TextField(blank=True)
     order_index = models.PositiveIntegerField()
 
+    # Store a public video URL for lessons instead of uploading local files.
+    video_url = models.URLField(blank=True, null=True)
+
     # Store uploads locally for dev; in production point MEDIA_ROOT at S3/NFS.
     video_file = models.FileField(
         upload_to="course_videos/",

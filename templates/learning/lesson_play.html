@@ -16,16 +16,20 @@
         Module: {{ lesson.module.title }} (Lesson {{ lesson.order_index }})
       </div>
 
-      {% if lesson.video_file %}
+      {% if lesson.video_url or lesson.video_file %}
         <div class="ratio ratio-16x9 mb-3">
           <video controls class="w-100">
-            <source src="{{ lesson.video_file.url }}" type="video/mp4" />
+            {% if lesson.video_url %}
+              <source src="{{ lesson.video_url }}" />
+            {% else %}
+              <source src="{{ lesson.video_file.url }}" type="video/mp4" />
+            {% endif %}
             Your browser does not support the video tag.
           </video>
         </div>
       {% else %}
         <div class="alert alert-warning">
-          This lesson doesn’t have a video uploaded yet.
+          This lesson doesn’t have a video link configured yet.
         </div>
       {% endif %}
 

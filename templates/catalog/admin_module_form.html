@@ -42,7 +42,7 @@
           <div>
             <div class="fw-semibold">Lesson {{ lesson.order_index }}: {{ lesson.title }}</div>
             <div class="text-muted small">
-              {% if lesson.video_file %}Video uploaded{% else %}Video not uploaded{% endif %}
+              {% if lesson.video_url or lesson.video_file %}Video configured{% else %}Video link not configured{% endif %}
             </div>
           </div>
           <div class="d-flex flex-wrap gap-2 justify-content-end">

@@ -10,7 +10,7 @@
     </a>
   </div>
 
-  <form method="post" enctype="multipart/form-data">
+  <form method="post">
     {% csrf_token %}
     <div class="row g-3">
       <div class="col-md-8">
@@ -27,16 +27,23 @@
           {{ form.order_index }}
         </div>
         <div class="mb-3">
-          <label class="form-label">Video file</label>
-          {{ form.video_file }}
+          <label class="form-label">Video URL</label>
+          {{ form.video_url }}
           <div class="text-muted small mt-1">
-            Upload MP4/WebM/etc. (dev server stores files locally under <code>media/</code>).
+            Paste a public video URL (for example, a direct MP4 link or a hosted video page).
           </div>
         </div>
       </div>
       <div class="col-md-4 d-grid align-content-start">
         <button type="submit" class="btn btn-primary btn-lg mt-2">Save lesson</button>
-        {% if mode == "edit" and lesson and lesson.video_file %}
+        {% if mode == "edit" and lesson and lesson.video_url %}
+          <div class="mt-3">
+            <div class="text-muted small mb-1">Current video</div>
+            <a class="btn btn-sm btn-outline-secondary" href="{{ lesson.video_url }}" target="_blank">
+              Open link
+            </a>
+          </div>
+        {% elif mode == "edit" and lesson and lesson.video_file %}
           <div class="mt-3">
             <div class="text-muted small mb-1">Current video</div>
             <a class="btn btn-sm btn-outline-secondary" href="{{ lesson.video_file.url }}" target="_blank">
