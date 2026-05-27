@@ -50,48 +50,45 @@
     <hr class="my-4" />
 
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-      <h3 class="mb-0">Modules & Lessons</h3>
-      <a class="btn btn-success" href="{% url 'catalog:admin_module_create' course.slug %}">Add module</a>
+      <h3 class="mb-0">Lessons</h3>
     </div>
 
-    {% for module in modules %}
-      <div class="card mb-3">
-        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-          <div>
-            <strong>Module {{ forloop.counter }}:</strong> {{ module.title }}
-          </div>
-          <div class="d-flex gap-2">
-            <a class="btn btn-sm btn-outline-primary" href="{% url 'catalog:admin_module_edit' module.id %}">Edit module</a>
+    {% if modules %}
+      {% for module in modules %}
+        <div class="card mb-3">
+          <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+              <strong>Module {{ forloop.counter }}:</strong> {{ module.title }}
+            </div>
             <a class="btn btn-sm btn-outline-success" href="{% url 'catalog:admin_lesson_create' module.id %}">Add lesson</a>
-            <a class="btn btn-sm btn-outline-danger" href="{% url 'catalog:admin_module_delete' module.id %}">Delete</a>
+          </div>
+          <div class="card-body">
+            <div class="list-group">
+              {% for lesson in module.lessons.all %}
+                <div class="list-group-item d-flex justify-content-between align-items-start gap-3">
+                  <div>
+                    <div class="fw-semibold">Lesson {{ lesson.order_index }}: {{ lesson.title }}</div>
+                    {% if lesson.video_url or lesson.video_file %}
+                      <div class="text-muted small">Video configured</div>
+                    {% else %}
+                      <div class="text-muted small">Video link not configured</div>
+                    {% endif %}
+                  </div>
+                  <div class="d-flex gap-2 flex-wrap justify-content-end">
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'catalog:admin_lesson_edit' lesson.id %}">Edit</a>
+                    <a class="btn btn-sm btn-outline-danger" href="{% url 'catalog:admin_lesson_delete' lesson.id %}">Delete</a>
+                  </div>
+                </div>
+              {% empty %}
+                <div class="text-muted">No lessons in this module yet.</div>
+              {% endfor %}
+            </div>
           </div>
         </div>
-        <div class="card-body">
-          <div class="list-group">
-            {% for lesson in module.lessons.all %}
-              <div class="list-group-item d-flex justify-content-between align-items-start gap-3">
-                <div>
-                  <div class="fw-semibold">Lesson {{ lesson.order_index }}: {{ lesson.title }}</div>
-                  {% if lesson.video_url or lesson.video_file %}
-                    <div class="text-muted small">Video configured</div>
-                  {% else %}
-                    <div class="text-muted small">Video link not configured</div>
-                  {% endif %}
-                </div>
-                <div class="d-flex gap-2 flex-wrap justify-content-end">
-                  <a class="btn btn-sm btn-outline-primary" href="{% url 'catalog:admin_lesson_edit' lesson.id %}">Edit</a>
-                  <a class="btn btn-sm btn-outline-danger" href="{% url 'catalog:admin_lesson_delete' lesson.id %}">Delete</a>
-                </div>
-              </div>
-            {% empty %}
-              <div class="text-muted">No lessons in this module yet.</div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    {% empty %}
+      {% endfor %}
+    {% else %}
       <div class="alert alert-info">No modules added yet.</div>
-    {% endfor %}
+    {% endif %}
   {% endif %}
 {% endblock %}
 

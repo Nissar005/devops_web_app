@@ -18,15 +18,42 @@
 
       {% if lesson.video_url or lesson.video_file %}
         <div class="ratio ratio-16x9 mb-3">
-          <video controls class="w-100">
-            {% if lesson.video_url %}
+          {% if lesson.video_url and lesson.embed_video_url %}
+            <iframe
+              src="{{ lesson.embed_video_url }}"
+              title="{{ lesson.title }}"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              class="w-100 h-100 border-0"
+              onerror="this.style.display='none'; document.getElementById('yt-fallback').style.display='block';"
+            ></iframe>
+            <div id="yt-fallback" style="display:none;">
+              <div class="alert alert-warning mt-2">
+                This video cannot be embedded. <a href="{{ lesson.video_url }}" target="_blank" rel="noopener">Watch on YouTube</a>.
+              </div>
+            </div>
+          {% elif lesson.video_url and lesson.is_direct_media_url %}
+            <video controls class="w-100">
               <source src="{{ lesson.video_url }}" />
-            {% else %}
+              Your browser does not support the video tag.
+            </video>
+          {% elif lesson.video_file %}
+            <video controls class="w-100">
               <source src="{{ lesson.video_file.url }}" type="video/mp4" />
-            {% endif %}
-            Your browser does not support the video tag.
-          </video>
+              Your browser does not support the video tag.
+            </video>
+          {% else %}
+            <div class="alert alert-warning">
+              This lesson doesn’t have a playable video configured yet.
+            </div>
+          {% endif %}
         </div>
+        {% if lesson.video_url and not lesson.embed_video_url and not lesson.is_direct_media_url %}
+          <div class="alert alert-info mb-3">
+            This link is not a direct video source. Open it directly in a new tab:
+            <a href="{{ lesson.video_url }}" target="_blank" rel="noopener noreferrer">{{ lesson.video_url }}</a>
+          </div>
+        {% endif %}
       {% else %}
         <div class="alert alert-warning">
           This lesson doesn’t have a video link configured yet.

@@ -1,3 +1,5 @@
+from urllib.parse import parse_qs, urlparse
+
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.text import slugify
@@ -76,6 +78,39 @@ class CourseLesson(models.Model):
     class Meta:
         unique_together = [("module", "order_index")]
         ordering = ["order_index"]
+
+    def is_direct_media_url(self) -> bool:
+        if not self.video_url:
+            return False
+
+        path = urlparse(self.video_url).path.lower()
+        return path.endswith((".mp4", ".webm", ".ogg", ".m3u8"))
+
+    def embed_video_url(self):
+        if not self.video_url:
+            return None
+
+        parsed = urlparse(self.video_url)
+        host = parsed.netloc.lower()
+
+        if "youtube.com" in host or "youtu.be" in host:
+            video_id = None
+            if "youtu.be" in host:
+                video_id = parsed.path.lstrip("/")
+            elif "youtube.com" in host and parsed.path == "/watch":
+                video_id = parse_qs(parsed.query).get("v", [None])[0]
+            elif "youtube.com" in host and parsed.path.startswith("/embed/"):
+                video_id = parsed.path.split("/embed/")[-1].split("?")[0]
+
+            if video_id:
+                return f"https://www.youtube.com/embed/{video_id}"
+
+        if "vimeo.com" in host:
+            video_id = parsed.path.strip("/").split("/")[-1]
+            if video_id:
+                return f"https://player.vimeo.com/video/{video_id}"
+
+        return None
 
     def __str__(self) -> str:
         return f"{self.module.course.title} - {self.title}"
